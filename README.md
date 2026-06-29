@@ -1,7 +1,11 @@
 # 🎯 Task 4: Real-Time Object Detection & Tracking
-AI Internship — Computer Vision Module
+
+AI Internship by **CodeAlpha** — Computer Vision Module
+
 ---
+
 # 📌 Introduction
+
 Object detection and tracking is one of the most impactful applications of computer vision. It powers self-driving cars, surveillance systems, sports analytics, robotics, and crowd monitoring. The core idea is straightforward: detect what objects are present in each frame, then persistently follow each object across frames by assigning it a unique ID.
 This project implements a complete real-time detection + tracking pipeline from scratch using:
 MobileNet SSD — a fast, lightweight neural network for detecting 20 types of objects
@@ -10,38 +14,55 @@ The system accepts either a live webcam feed or any pre-recorded video, processe
 
 ---
 
-✨ Features
-Feature	Detail
-🔍 Real-time detection	MobileNet SSD processes each frame via OpenCV DNN backend
-🏷️ 20 object classes	Person, car, bus, bicycle, dog, cat, bottle, chair, and more (PASCAL VOC)
-🔢 Unique Track IDs	Every detected object gets a persistent ID that survives brief occlusions
-📐 Kalman Filtering	Smooth bounding box prediction even when detector misses a frame
-🔗 Hungarian Algorithm	Optimal detection-to-track assignment per frame (scipy)
-🌈 Colour-coded tracks	Each track ID gets its own colour — visually distinct at a glance
-🐾 Motion trails	30-frame centroid trail drawn per object to visualise movement path
-📊 Live HUD	FPS counter, active track count, and frame number overlaid on video
-💾 Video export	Output saved as `.mp4` (downloadable via Streamlit or CLI)
-🌐 Streamlit Web App	Browser-based UI — upload a video and watch it process live
-🧪 Demo generator	Synthetic test video with moving objects — no webcam needed
-⚙️ Fully configurable	Confidence, IoU, max_age, min_hits all tunable via CLI flags or UI sliders
+# ✨ Features
+
+| Feature | Detail |
+|---|---|
+| 🔍 Real-time detection | MobileNet SSD processes each frame via OpenCV DNN backend |
+| 🏷️ 20 object classes | Person, car, bus, bicycle, dog, cat, bottle, chair, and more (PASCAL VOC) |
+| 🔢 Unique Track IDs | Every detected object gets a persistent ID that survives brief occlusions |
+| 📐 Kalman Filtering | Smooth bounding box prediction even when detector misses a frame |
+| 🔗 Hungarian Algorithm | Optimal detection-to-track assignment per frame (scipy) |
+| 🌈 Colour-coded tracks | Each track ID gets its own colour — visually distinct at a glance |
+| 🐾 Motion trails | 30-frame centroid trail drawn per object to visualise movement path |
+| 📊 Live HUD | FPS counter, active track count, and frame number overlaid on video |
+| 💾 Video export | Output saved as .mp4 (downloadable via Streamlit or CLI) |
+| 🌐 Streamlit Web App | Browser-based UI — upload a video and watch it process live |
+| 🧪 Demo generator | Synthetic test video with moving objects — no webcam needed |
+| ⚙️ Fully configurable | Confidence, IoU, max_age, min_hits all tunable via CLI flags or UI sliders |
+
 ---
-🤔 Why These Choices?
-Why MobileNet SSD instead of YOLO or Faster R-CNN?
-Model	Speed	Accuracy	Dependency
-MobileNet SSD ✅	Very fast (CPU-friendly)	Good for 20 classes	OpenCV only — no PyTorch/TF
-YOLOv8	Fast (needs GPU ideally)	Excellent	Requires `ultralytics` + PyTorch
-Faster R-CNN	Slow	Highest	Heavy PyTorch dependency
+
+# 🤔 Why These Choices?
+
+## Why MobileNet SSD instead of YOLO or Faster R-CNN?
+
+| Model | Speed | Accuracy | Dependency |
+|---|---|---|---|
+| MobileNet SSD | ✅ Very fast (CPU-friendly) | Good for 20 classes | OpenCV only — no PyTorch/TF |
+| YOLOv8 | Fast (needs GPU ideally) | Excellent | Requires ultralytics + PyTorch |
+| Faster R-CNN | Slow | Highest | Heavy PyTorch dependency |
+
 MobileNet SSD runs comfortably at 20–30 FPS on CPU with no GPU required, making it ideal for an internship demo and real deployment on modest hardware. It uses the OpenCV DNN module directly — no additional deep learning framework needed.
-Why SORT instead of Deep SORT?
-Tracker	Complexity	Accuracy	Re-ID?
-SORT ✅	Simple, fast	Good	No (IoU only)
-Deep SORT	Moderate	Better	Yes (appearance embedding)
-ByteTrack	Complex	Best	Partial
+
+## Why SORT instead of Deep SORT?
+
+| Tracker | Complexity | Accuracy | Re-ID? |
+|---|---|---|---|
+| SORT | ✅ Simple, fast | Good | No (IoU only) |
+| Deep SORT | Moderate | Better | Yes (appearance embedding) |
+| ByteTrack | Complex | Best | Partial |
+
 SORT is the foundation of almost all modern trackers. It is elegant, well-understood, and perfectly suitable for this task. Deep SORT adds a deep appearance descriptor for re-identification after long occlusions — overkill for a demonstration and adds a heavy model dependency.
-Why OpenCV DNN?
-OpenCV's `cv2.dnn` module can load Caffe, TensorFlow, ONNX, and Darknet models and run them on CPU with zero additional dependencies. This keeps the project lightweight, portable, and easy to run on any machine without CUDA or cloud GPUs.
+
+## Why OpenCV DNN?
+
+OpenCV's cv2.dnn module can load Caffe, TensorFlow, ONNX, and Darknet models and run them on CPU with zero additional dependencies. This keeps the project lightweight, portable, and easy to run on any machine without CUDA or cloud GPUs.
+
 ---
-🏗️ System Architecture
+
+# 🏗️ System Architecture
+
 ```
   ┌──────────────────────────────────────────────────────┐
   │                    INPUT STAGE                       │
@@ -90,8 +111,11 @@ OpenCV's `cv2.dnn` module can load Caffe, TensorFlow, ONNX, and Darknet models a
                             ▼
               Live Window  /  MP4 Output  /  Streamlit UI
 ```
+
 ---
-📦 Project Structure
+
+# 📦 Project Structure
+
 ```
 task4_detection_tracking/
 │
@@ -107,14 +131,17 @@ task4_detection_tracking/
 │
 ├── demo_input.mp4           ← Auto-generated synthetic test video
 └── output_tracked.mp4       ← Sample output (pre-run on demo video)
+
 ```
 ---
-🚀 How to Run
-Step 1 — Install dependencies
+
+# 🚀 How to Run
+
+* Step 1 — Install dependencies
 ```bash
 pip install opencv-python numpy scipy streamlit
 ```
-Step 2 — Download the model (one-time)
+* Step 2 — Download the model (one-time)
 ```bash
 mkdir models
 
@@ -124,39 +151,46 @@ wget https://raw.githubusercontent.com/chuanqi305/MobileNet-SSD/master/voc/Mobil
 wget https://raw.githubusercontent.com/djmv/MobilNet_SSD_opencv/master/MobileNetSSD_deploy.caffemodel \
      -O models/MobileNetSSD_deploy.caffemodel
 ```
-Step 3a — Run on webcam (live)
+* Step 3a — Run on webcam (live)
 ```bash
 python detect_track.py
 # Press 'q' to quit
 ```
-Step 3b — Run on a video file
+* Step 3b — Run on a video file
 ```bash
 python detect_track.py --input my_video.mp4 --output result.mp4
 ```
-Step 3c — Headless (no display window)
+* Step 3c — Headless (no display window)
 ```bash
 python detect_track.py --input my_video.mp4 --no-display
 ```
-Step 3d — Launch the Streamlit web app
+* Step 3d — Launch the Streamlit web app
 ```bash
 streamlit run app.py
 # Open http://localhost:8501 in your browser
 # Upload a video or click "Generate & Use Demo Video"
 ```
+
 ---
-⚙️ CLI Reference
-Flag	Default	Description
-`--input`	`0` (webcam)	Video file path or camera index
-`--proto`	`models/deploy.prototxt`	Path to network definition
-`--model`	`models/MobileNetSSD_deploy.caffemodel`	Path to weights
-`--conf`	`0.4`	Minimum detection confidence (0–1)
-`--max-age`	`5`	SORT: frames to keep a lost track alive
-`--min-hits`	`2`	SORT: detections before track is confirmed
-`--iou`	`0.3`	SORT: IoU threshold for det↔track matching
-`--output`	`output_tracked.mp4`	Output video save path
-`--no-display`	—	Disable live window (server/headless mode)
+
+# ⚙️ CLI Reference
+
+| Flag | Default | Description |
+|---|---|---|
+| --input | 0 (webcam) | Video file path or camera index |
+| --proto | models/deploy.prototxt | Path to network definition |
+| --model | models/MobileNetSSD_deploy.caffemodel | Path to weights |
+| --conf | 0.4 | Minimum detection confidence (0–1) |
+| --max-age | 5 | SORT: frames to keep a lost track alive |
+| --min-hits | 2 | SORT: detections before track is confirmed |
+| --iou | 0.3 | SORT: IoU threshold for det↔track matching |
+| --output | output_tracked.mp4 | Output video save path |
+| --no-display | None | Disable live window (server/headless mode) |
+
 ---
-🔬 Algorithm Details
+
+# 🔬 Algorithm Details
+
 MobileNet SSD
 Backbone: MobileNet (depthwise-separable convolutions — very fast on CPU)
 Head: SSD multi-scale anchor boxes for detection
@@ -175,23 +209,22 @@ Track Lifecycle
 ```
 Detection → [tentative] → (min_hits confirmed) → [active] → (max_age missed) → [deleted]
 ```
+
 ---
-📊 Results (Demo Video)
-Metric	Value
-Video resolution	854 × 480
-Total frames processed	250 (10 seconds @ 25 fps)
-Avg processing speed	~20–30 FPS on CPU
-Unique track IDs assigned	3–8 per run
-Classes detectable	20 (PASCAL VOC set)
-Model size	23 MB (caffemodel)
-External GPU required	❌ No — CPU only
+
+# 📊 Results (Demo Video)
+
+| Metric | Value |
+|---|---|
+| Video resolution | 854 × 480 |
+| Total frames processed | 250 (10 seconds @ 25 fps) |
+| Avg processing speed | ~20–30 FPS on CPU |
+| Unique track IDs assigned | 3–8 per run |
+| Classes detectable | 20 (PASCAL VOC set) |
+| Model size | 23 MB (caffemodel) |
+| External GPU required | ❌ No — CPU only |
+
 ---
-📚 References
-Bewley, A. et al. (2016). Simple Online and Realtime Tracking. IEEE ICIP. https://arxiv.org/abs/1602.00763
-Howard, A. G. et al. (2017). MobileNets: Efficient CNNs for Mobile Vision Applications. arXiv:1704.04861
-Liu, W. et al. (2016). SSD: Single Shot MultiBox Detector. ECCV. https://arxiv.org/abs/1512.02325
-OpenCV DNN Module — https://docs.opencv.org/master/d2/d58/tutorial_dnn_intro.html
-Kuhn, H. W. (1955). The Hungarian Method for the Assignment Problem. Naval Research Logistics.
----
-Developed as part of AI Internship — Task 4: Object Detection & Tracking  
+
+Developed as part of AI Internship by **CodeAlpha** — Task 4: Object Detection & Tracking  
 Stack: Python · OpenCV · NumPy · SciPy · Streamlit
